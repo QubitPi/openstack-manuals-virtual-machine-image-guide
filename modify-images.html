@@ -1,0 +1,864 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Modify images &#8212; Virtual Machine Image Guide  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/basic.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="canonical" href="/openstack-manuals-virtual-machine-image-guide/modify-images.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Create images manually" href="create-images-manually.html" />
+    <link rel="prev" title="Image requirements" href="openstack-images.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Bootstrap CSS -->
+<link href="_static/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Fonts -->
+<link href="_static/css/font-awesome.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="_static/css/combined.css" rel="stylesheet">
+
+<!-- Search CSS -->
+<link href="_static/css/search.css" rel="stylesheet">
+
+<!-- Pygments CSS -->
+<link href="_static/pygments.css" rel="stylesheet">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17511903-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+
+  </head><body>
+
+<!-- SOURCE_FILE: https://opendev.org/openstack/openstack-manuals/src/doc/image-guide/source/modify-images.rst -->
+
+<script>
+    (function (window, document) {
+        var loader = function () {
+            var script = document.createElement("script"), tag = document.getElementsByTagName("script")[0];
+            script.src = "https://search.openstack.org/widget/embed.min.js?t="+Date.now();
+            tag.parentNode.insertBefore(script, tag);
+        };
+        window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+    })(window, document);
+</script>
+
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button class="navbar-toggle" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <div class="brand-wrapper">
+        <a class="navbar-brand" href="https://www.openstack.org/"></a>
+      </div>
+      <div class="search-icon show"><i class="fa fa-search"></i> Search</div></div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <div class="search-container tiny">
+    <div class="openstack-search-bar" data-baseUrl="search.openstack.org" data-context="docs-openstack"></div>
+</div>
+      <ul class="nav navbar-nav navbar-main show">
+        <li class="search-container-mobile">
+    <div class="openstack-search-bar" data-baseUrl="search.openstack.org" data-context="docs-openstack"></div>
+</li>
+        <li> <!--Software -->
+          <a href="https://www.openstack.org/software/" class="drop" id="dropdownMenuSoftware">Software <i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuSoftware">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/software/">Overview</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/software/project-navigator/openstack-components">OpenStack Components</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/software/project-navigator/sdks">SDKs</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/software/project-navigator/deployment-tools">Deployment Tools</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/assets/software/projectmap/openstack-map.pdf" target="_blank">OpenStack Map</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/software/sample-configs/">Sample Configs</a></li>
+          </ul>
+        </li>
+        <li> <!-- Use Cases -->
+          <a href="https://www.openstack.org/use-cases/" class="drop" id="dropdownMenuUsers">Use Cases <i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuUsers">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/">Users in Production</a></li>
+            <li role="presentation" class="divider"></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/bare-metal/">Ironic Bare Metal</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/edge-computing/">Edge Computing</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/telecoms-and-nfv/">Telecom & NFV</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/science/">Science and HPC</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/containers/">Containers</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/enterprise/">Enterprise</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/surveys/landing">User Survey</a></li>
+          </ul>
+        </li>
+        <li> <!-- Events -->
+          <a href="https://www.openstack.org/events/" class="drop" id="dropdownMenuEvents">Events <i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuEvents">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/summit/">Open Infrastructure Summits</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/ptg/">Project Teams Gathering</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/events/opendev-2020/">OpenDev</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/events/community-events/">Community Events</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/events/openstackdays">OpenStack & OpenInfra Days</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/videos/">Summit Videos</a></li>
+          </ul>
+        </li>
+        <li><!-- Community -->
+          <a href="https://www.openstack.org/community/" class="drop" id="dropdownMenuCommunity">Community <i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuCommunity">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/community/">Welcome! Start Here</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/community/tech-committee">OpenStack Technical Committee</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/community/speakers/">Speakers Bureau</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="http://wiki.openstack.org">OpenStack Wiki</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/coa/">Get Certified (COA)</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/community/jobs/">Jobs</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketing/">Marketing Resources</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/news/">Community News</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="http://superuser.openstack.org">Superuser Magazine</a></li>
+            <li role="presentation" class="divider"></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/community/supporting-organizations/">OpenInfra Foundation Supporting Organizations</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://openinfra.dev">Open Infrastructure Foundation (OpenInfra Foundation)</a></li>
+          </ul>
+        </li>
+        <li><!-- Marketplace -->
+          <a href="https://www.openstack.orgmarketplace/" class="drop" id="dropdownMenuLearn">Marketplace <i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu dropdown-hover" role="menu" aria-labelledby="dropdownMenuEvents">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/training/">Training</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/distros/">Distros & Appliances</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/public-clouds/">Public Clouds</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/hosted-private-clouds/">Hosted Private Clouds</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/remotely-managed-private-clouds/">Remotely Managed Private Clouds</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/consulting/">Consulting & Integrators</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/drivers/">Drivers</a></li>
+          </ul>
+        </li>
+        <li><!-- Blog -->
+          <a href="https://www.openstack.org/blog/">Blog</a>
+        </li>
+        <li><!-- Docs -->
+          <a href="http://docs.openstack.org/">Docs</a>
+        </li>
+        <li> <!-- Join -->
+            <li class="join-nav-section">
+              <a href="https://openinfra.dev/join/" id="dropdownMenuJoin">Join <i class="fa fa-caret-down"></i></a>
+              <ul class="dropdown-menu dropdown-hover" role="menu" aria-labelledby="dropdownMenuJoin" style="display: none;">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="https://openinfra.dev/join/">Sign up for Foundation Membership</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="https://openinfra.dev/join/">Sponsor the Foundation</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="https://openinfra.dev">More about the Foundation</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.openstack.org/Security/login/?BackURL=/home/" class="sign-in-btn">Log In</a>
+            </li>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- /.container -->
+</nav>
+
+    <div class="container docs-book-wrapper">
+      <div class="row">
+        <div class="col-lg-9 col-md-8 col-sm-8 col-lg-push-3 col-md-push-4 col-sm-push-4">
+<div class="row docs-title">
+  <div class="col-lg-8">
+      <h1>Modify images</h1>
+    
+  </div>
+  <div class="docs-actions">
+    
+    <a href="openstack-images.html"><i class="fa fa-angle-double-left" data-toggle="tooltip" data-placement="top" title="Previous: Image requirements"></i></a>
+    
+    
+    <a href="create-images-manually.html"><i class="fa fa-angle-double-right" data-toggle="tooltip" data-placement="top" title="Next: Create images manually"></i></a>
+    
+    <a id="pdfLink1" href="" target="_blank" title="Download the manuals as PDF"><i class="fa fa-file-pdf-o" data-toggle="tooltip" data-placement="top" title="Download PDF"></i></a>
+    
+    <a id="logABugLink1" href="" target="_blank" title="Found an error? Report a bug against this page"><i class="fa fa-bug" data-toggle="tooltip" data-placement="top" title="Report a Bug"></i></a>
+    
+  </div>
+</div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="docs-body" role="main">
+
+  <section id="modify-images">
+<h1>Modify images<a class="headerlink" href="#modify-images" title="Permalink to this heading">¶</a></h1>
+<p>Once you have obtained a virtual machine image, you may want to
+make some changes to it before uploading it to the Image service.
+Here we describe several tools available that allow you to modify images.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not attempt to use these tools to modify an image
+that is attached to a running virtual machine.
+These tools are designed only to modify the images that
+are not currently running.</p>
+</div>
+<section id="guestfish">
+<h2>guestfish<a class="headerlink" href="#guestfish" title="Permalink to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">guestfish</span></code> program is a tool from the
+<a class="reference external" href="http://libguestfs.org/">libguestfs</a> project that allows
+you to modify the files inside of a virtual machine image.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">guestfish</span></code> does not mount the image directly into the
+local file system. Instead, it provides you with a shell
+interface that enables you to view, edit, and delete files.
+Many of <strong class="command">guestfish</strong> commands, such as <strong class="command">touch</strong>,
+<strong class="command">chmod</strong>, and <strong class="command">rm</strong>, resemble traditional bash commands.</p>
+</div>
+<section id="example-guestfish-session">
+<h3>Example guestfish session<a class="headerlink" href="#example-guestfish-session" title="Permalink to this heading">¶</a></h3>
+<p>Sometimes you must modify a virtual machine image to remove
+any traces of the MAC address that was assigned to the virtual
+network interface card when the image was first created.
+This is because the MAC address is different when the virtual
+machine images boots.
+This example shows how to use the <code class="docutils literal notranslate"><span class="pre">guestfish</span></code> to remove
+references to the old MAC address by deleting the
+<code class="docutils literal notranslate"><span class="pre">/etc/udev/rules.d/70-persistent-net.rules</span></code> file and
+removing the <code class="docutils literal notranslate"><span class="pre">HWADDR</span></code> line from the
+<code class="docutils literal notranslate"><span class="pre">/etc/sysconfig/network-scripts/ifcfg-eth0</span></code> file.</p>
+<p>Assume that you have a CentOS qcow2 image called <code class="docutils literal notranslate"><span class="pre">centos63_desktop.img</span></code>.
+Mount the image in read-write mode as root, as follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>guestfish --rw -a centos63_desktop.img
+
+<span class="go">Welcome to guestfish, the libguestfs filesystem interactive shell for</span>
+<span class="go">editing virtual machine filesystems.</span>
+
+<span class="go">Type: &#39;help&#39; for help on commands</span>
+<span class="go">&#39;man&#39; to read the manual</span>
+<span class="go">&#39;quit&#39; to quit the shell</span>
+
+<span class="go">&gt;&lt;fs&gt;</span>
+</pre></div>
+</div>
+<p>This starts a guestfish session.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the guestfish prompt looks like a fish: <code class="docutils literal notranslate"><span class="pre">&gt;&lt;fs&gt;</span></code>.</p>
+</div>
+<p>We must first use the <strong class="command">run</strong> command at the guestfish
+prompt before we can do anything else.
+This will launch a virtual machine, which will
+be used to perform all of the file manipulations.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&lt;fs&gt; run</span>
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p>We can now view the file systems in the image using the
+<strong class="command">list-filesystems</strong> command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&lt;fs&gt; list-filesystems</span>
+<span class="go">/dev/vda1: ext4</span>
+<span class="go">/dev/vg_centosbase/lv_root: ext4</span>
+<span class="go">/dev/vg_centosbase/lv_swap: swap</span>
+</pre></div>
+</div>
+</li>
+<li><p>We need to mount the logical volume that contains the root partition:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&lt;fs&gt; mount /dev/vg_centosbase/lv_root /</span>
+</pre></div>
+</div>
+</li>
+<li><p>Next, we want to delete a file. We can use the <strong class="command">rm</strong> guestfish
+command, which works the same way it does in a traditional shell.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&lt;fs&gt; rm /etc/udev/rules.d/70-persistent-net.rules</span>
+</pre></div>
+</div>
+</li>
+<li><p>We want to edit the <code class="docutils literal notranslate"><span class="pre">ifcfg-eth0</span></code> file to remove the <code class="docutils literal notranslate"><span class="pre">HWADDR</span></code> line.
+The <strong class="command">edit</strong> command will copy the file to the host,
+invoke your editor, and then copy the file back.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&lt;fs&gt; edit /etc/sysconfig/network-scripts/ifcfg-eth0</span>
+</pre></div>
+</div>
+</li>
+<li><p>If you want to modify this image to load the 8021q kernel
+at boot time, you must create an executable script in the
+<code class="docutils literal notranslate"><span class="pre">/etc/sysconfig/modules/</span></code> directory.
+You can use the <strong class="command">touch</strong> guestfish command to create
+an empty file, the <strong class="command">edit</strong> command to edit it,
+and the <strong class="command">chmod</strong> command to make it executable.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&lt;fs&gt; touch /etc/sysconfig/modules/8021q.modules</span>
+<span class="go">&gt;&lt;fs&gt; edit /etc/sysconfig/modules/8021q.modules</span>
+</pre></div>
+</div>
+</li>
+<li><p>We add the following line to the file and save it:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">modprobe 8021q</span>
+</pre></div>
+</div>
+</li>
+<li><p>Then we set to executable:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&lt;fs&gt; chmod 0755 /etc/sysconfig/modules/8021q.modules</span>
+</pre></div>
+</div>
+</li>
+<li><p>We are done, so we can exit using the <strong class="command">exit</strong> command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&lt;fs&gt; exit</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="go-further-with-guestfish">
+<h3>Go further with guestfish<a class="headerlink" href="#go-further-with-guestfish" title="Permalink to this heading">¶</a></h3>
+<p>There is an enormous amount of functionality in guestfish
+and a full treatment is beyond the scope of this document.
+Instead, we recommend that you read the
+<a class="reference external" href="http://libguestfs.org/guestfs-recipes.1.html">guestfs-recipes</a>
+documentation page for a sense of what is possible with these tools.</p>
+</section>
+</section>
+<section id="guestmount">
+<h2>guestmount<a class="headerlink" href="#guestmount" title="Permalink to this heading">¶</a></h2>
+<p>For some types of changes, you may find it easier to
+mount the image’s file system directly in the guest.
+The <code class="docutils literal notranslate"><span class="pre">guestmount</span></code> program, also from the
+libguestfs project, allows you to do so.</p>
+<ol class="arabic">
+<li><p>For example, to mount the root partition from our
+<code class="docutils literal notranslate"><span class="pre">centos63_desktop.qcow2</span></code> image to <code class="docutils literal notranslate"><span class="pre">/mnt</span></code>, we can do:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>guestmount -a centos63_desktop.qcow2 -m /dev/vg_centosbase/lv_root --rw /mnt
+</pre></div>
+</div>
+</li>
+<li><p>If we did not know in advance what the mount point is in
+the guest, we could use the <code class="docutils literal notranslate"><span class="pre">-i</span></code> (inspect) flag to tell guestmount
+to automatically determine what mount point to use:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>guestmount -a centos63_desktop.qcow2 -i --rw /mnt
+</pre></div>
+</div>
+</li>
+<li><p>Once mounted, we could do things like list the installed packages using rpm:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>rpm -qa --dbpath /mnt/var/lib/rpm
+</pre></div>
+</div>
+</li>
+<li><p>Once done, we unmount:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>umount /mnt
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="virt-tools">
+<h2>virt-* tools<a class="headerlink" href="#virt-tools" title="Permalink to this heading">¶</a></h2>
+<p>The <a class="reference external" href="http://libguestfs.org/">libguestfs</a>
+project has a number of other useful tools, including:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://libguestfs.org/virt-edit.1.html">virt-edit</a>
+for editing a file inside of an image.</p></li>
+<li><p><a class="reference external" href="http://libguestfs.org/virt-df.1.html">virt-df</a>
+for displaying free space inside of an image.</p></li>
+<li><p><a class="reference external" href="http://libguestfs.org/virt-resize.1.html">virt-resize</a>
+for resizing an image.</p></li>
+<li><p><a class="reference external" href="http://libguestfs.org/virt-sysprep.1.html">virt-sysprep</a>
+for preparing an image for distribution (for example, delete
+SSH host keys, remove MAC address info, or remove user accounts).</p></li>
+<li><p><a class="reference external" href="http://libguestfs.org/virt-sparsify.1.html">virt-sparsify</a>
+for making an image sparse.</p></li>
+<li><p><a class="reference external" href="http://libguestfs.org/virt-v2v/">virt-p2v</a>
+for converting a physical machine to an image that runs on KVM.</p></li>
+<li><p><a class="reference external" href="http://libguestfs.org/virt-v2v/">virt-v2v</a>
+for converting Xen and VMware images to KVM images.</p></li>
+</ul>
+<section id="modify-a-single-file-inside-of-an-image">
+<h3>Modify a single file inside of an image<a class="headerlink" href="#modify-a-single-file-inside-of-an-image" title="Permalink to this heading">¶</a></h3>
+<p>This example shows how to use <strong class="command">virt-edit</strong> to modify a file.
+The command can take either a filename as an argument with the
+<code class="docutils literal notranslate"><span class="pre">-a</span></code> flag, or a domain name as an argument with the <code class="docutils literal notranslate"><span class="pre">-d</span></code> flag.
+The following examples shows how to use this to modify the
+<code class="docutils literal notranslate"><span class="pre">/etc/shadow</span></code> file in instance with libvirt domain name
+<code class="docutils literal notranslate"><span class="pre">instance-000000e1</span></code> that is currently running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>virsh shutdown instance-000000e1
+<span class="gp"># </span>virt-edit -d instance-000000e1 /etc/shadow
+<span class="gp"># </span>virsh start instance-000000e1
+</pre></div>
+</div>
+</section>
+<section id="resize-an-image">
+<h3>Resize an image<a class="headerlink" href="#resize-an-image" title="Permalink to this heading">¶</a></h3>
+<p>Here is an example of how to use <strong class="command">virt-resize</strong> to resize an image.
+Assume we have a 16 GB Windows image in qcow2 format that we want to
+resize to 50 GB.</p>
+<ol class="arabic">
+<li><p>First, we use <strong class="command">virt-filesystems</strong> to identify the partitions:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>virt-filesystems --long --parts --blkdevs -h -a /data/images/win2012.qcow2
+<span class="go">Name       Type       MBR  Size  Parent</span>
+<span class="go">/dev/sda1  partition  07   350M  /dev/sda</span>
+<span class="go">/dev/sda2  partition  07   16G   /dev/sda</span>
+<span class="go">/dev/sda   device     -    16G   -</span>
+</pre></div>
+</div>
+</li>
+<li><p>In this case, it is the <code class="docutils literal notranslate"><span class="pre">/dev/sda2</span></code> partition that we want to resize.
+We create a new qcow2 image and use the <strong class="command">virt-resize</strong> command to
+write a resized copy of the original into the new image:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>qemu-img create -f qcow2 /data/images/win2012-50gb.qcow2 50G
+<span class="gp"># </span>virt-resize --expand /dev/sda2 /data/images/win2012.qcow2 <span class="se">\</span>
+  /data/images/win2012-50gb.qcow2
+<span class="go">Examining /data/images/win2012.qcow2 ...</span>
+<span class="go">**********</span>
+
+<span class="go">Summary of changes:</span>
+
+<span class="go">/dev/sda1: This partition will be left alone.</span>
+
+<span class="go">/dev/sda2: This partition will be resized from 15.7G to 49.7G.  The</span>
+<span class="go">    filesystem ntfs on /dev/sda2 will be expanded using the</span>
+<span class="go">    &#39;ntfsresize&#39; method.</span>
+
+<span class="go">**********</span>
+<span class="go">Setting up initial partition table on /data/images/win2012-50gb.qcow2 ...</span>
+<span class="go">Copying /dev/sda1 ...</span>
+<span class="go"> 100% [                                                                 ] 00:00</span>
+<span class="go">Copying /dev/sda2 ...</span>
+<span class="go"> 100% [                                                                 ] 00:00</span>
+<span class="go">Expanding /dev/sda2 using the &#39;ntfsresize&#39; method ...</span>
+
+<span class="go">Resize operation completed with no errors. Before deleting the old</span>
+<span class="go">disk, carefully check that the resized disk boots and works correctly.</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="loop-devices-kpartx-network-block-devices">
+<h2>Loop devices, kpartx, network block devices<a class="headerlink" href="#loop-devices-kpartx-network-block-devices" title="Permalink to this heading">¶</a></h2>
+<p>If you do not have access to the libguestfs, you can mount
+image file systems directly in the host using loop
+devices, kpartx, and network block devices.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Mounting untrusted guest images using the tools described in
+this section is a security risk, always use libguestfs tools
+such as guestfish and guestmount if you have access to them.
+See <a class="reference external" href="https://www.berrange.com/posts/2013/02/20/a-reminder-why-you-should-never-mount-guest-disk-images-on-the-host-os/">A reminder why you should never mount guest disk images
+on the host OS</a>
+by Daniel Berrangé for more details.</p>
+</div>
+<section id="mount-a-raw-image-without-lvm">
+<h3>Mount a raw image (without LVM)<a class="headerlink" href="#mount-a-raw-image-without-lvm" title="Permalink to this heading">¶</a></h3>
+<p>If you have a raw virtual machine image that is not using
+LVM to manage its partitions, use the <strong class="command">losetup</strong> command
+to find an unused loop device.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>losetup -f
+<span class="go">/dev/loop0</span>
+</pre></div>
+</div>
+<p>In this example, <code class="docutils literal notranslate"><span class="pre">/dev/loop0</span></code> is free.
+Associate a loop device with the raw image:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>losetup /dev/loop0 fedora17.img
+</pre></div>
+</div>
+<p>If the image only has a single partition,
+you can mount the loop device directly:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>mount /dev/loop0 /mnt
+</pre></div>
+</div>
+<p>If the image has multiple partitions, use <strong class="command">kpartx</strong> to expose the
+partitions as separate devices (for example, <code class="docutils literal notranslate"><span class="pre">/dev/mapper/loop0p1</span></code>),
+then mount the partition that corresponds to the root file system:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>kpartx -av /dev/loop0
+</pre></div>
+</div>
+<p>If the image has, say three partitions (/boot, /, swap),
+there should be one new device created per partition:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls -l /dev/mapper/loop0p*
+<span class="go">brw-rw---- 1 root disk 43, 49 2012-03-05 15:32 /dev/mapper/loop0p1</span>
+<span class="go">brw-rw---- 1 root disk 43, 50 2012-03-05 15:32 /dev/mapper/loop0p2</span>
+<span class="go">brw-rw---- 1 root disk 43, 51 2012-03-05 15:32 /dev/mapper/loop0p3</span>
+</pre></div>
+</div>
+<p>To mount the second partition, as root:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>mkdir /mnt/image
+<span class="gp"># </span>mount /dev/mapper/loop0p2 /mnt/image
+</pre></div>
+</div>
+<p>Once you are done, to clean up:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>umount /mnt/image
+<span class="gp"># </span>rmdir /mnt/image
+<span class="gp"># </span>kpartx -d /dev/loop0
+<span class="gp"># </span>losetup -d /dev/loop0
+</pre></div>
+</div>
+</section>
+<section id="mount-a-raw-image-with-lvm">
+<h3>Mount a raw image (with LVM)<a class="headerlink" href="#mount-a-raw-image-with-lvm" title="Permalink to this heading">¶</a></h3>
+<p>If your partitions are managed with LVM, use <strong class="command">losetup</strong>
+and <strong class="command">kpartx</strong> commands as in the previous example to expose the
+partitions to the host.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>losetup -f
+<span class="go">/dev/loop0</span>
+<span class="gp"># </span>losetup /dev/loop0 rhel62.img
+<span class="gp"># </span>kpartx -av /dev/loop0
+</pre></div>
+</div>
+<p>Next, you need to use the <strong class="command">vgscan</strong> command to identify the LVM
+volume groups and then the <strong class="command">vgchange</strong> command to expose the volumes
+as devices:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>vgscan
+<span class="go">Reading all physical volumes. This may take a while...</span>
+<span class="go">Found volume group &quot;vg_rhel62x8664&quot; using metadata type lvm2</span>
+<span class="gp"># </span>vgchange -ay
+<span class="go">2 logical volume(s) in volume group &quot;vg_rhel62x8664&quot; now active</span>
+<span class="gp"># </span>mount /dev/vg_rhel62x8664/lv_root /mnt
+</pre></div>
+</div>
+<p>Clean up when you are done:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>umount /mnt
+<span class="gp"># </span>vgchange -an vg_rhel62x8664
+<span class="gp"># </span>kpartx -d /dev/loop0
+<span class="gp"># </span>losetup -d /dev/loop0
+</pre></div>
+</div>
+</section>
+<section id="mount-a-qcow2-image-without-lvm">
+<h3>Mount a qcow2 image (without LVM)<a class="headerlink" href="#mount-a-qcow2-image-without-lvm" title="Permalink to this heading">¶</a></h3>
+<p>You need the <code class="docutils literal notranslate"><span class="pre">nbd</span></code> (network block device) kernel module
+loaded to mount qcow2 images. This will load it with support
+for 16 block devices, which is fine for our purposes. As root:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>modprobe nbd <span class="nv">max_part</span><span class="o">=</span><span class="m">16</span>
+</pre></div>
+</div>
+<p>Assuming the first block device (<code class="docutils literal notranslate"><span class="pre">/dev/nbd0</span></code>) is not currently
+in use, we can expose the disk partitions using the
+<strong class="command">qemu-nbd</strong> and <strong class="command">partprobe</strong> commands. As root:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>qemu-nbd -c /dev/nbd0 image.qcow2
+<span class="gp"># </span>partprobe /dev/nbd0
+</pre></div>
+</div>
+<p>If the image has, say three partitions (/boot, /, swap),
+there should be one new device created for each partition:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls -l /dev/nbd0*
+<span class="go">brw-rw---- 1 root disk 43, 48 2012-03-05 15:32 /dev/nbd0</span>
+<span class="go">brw-rw---- 1 root disk 43, 49 2012-03-05 15:32 /dev/nbd0p1</span>
+<span class="go">brw-rw---- 1 root disk 43, 50 2012-03-05 15:32 /dev/nbd0p2</span>
+<span class="go">brw-rw---- 1 root disk 43, 51 2012-03-05 15:32 /dev/nbd0p3</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the network block device you selected was already in use,
+the initial <strong class="command">qemu-nbd</strong> command will fail silently, and the
+<code class="docutils literal notranslate"><span class="pre">/dev/nbd0p{1,2,3}</span></code> device files will not be created.</p>
+</div>
+<p>If the image partitions are not managed with LVM,
+they can be mounted directly:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>mkdir /mnt/image
+<span class="gp"># </span>mount /dev/nbd0p2 /mnt/image
+</pre></div>
+</div>
+<p>When you are done, clean up:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>umount /mnt/image
+<span class="gp"># </span>rmdir /mnt/image
+<span class="gp"># </span>qemu-nbd -d /dev/nbd0
+</pre></div>
+</div>
+</section>
+<section id="mount-a-qcow2-image-with-lvm">
+<h3>Mount a qcow2 image (with LVM)<a class="headerlink" href="#mount-a-qcow2-image-with-lvm" title="Permalink to this heading">¶</a></h3>
+<p>If the image partitions are managed with LVM, after you use
+<strong class="command">qemu-nbd</strong> and <strong class="command">partprobe</strong>, you must use
+<strong class="command">vgscan</strong> and <strong class="command">vgchange -ay</strong> in order to
+expose the LVM partitions as devices that can be mounted:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>modprobe nbd <span class="nv">max_part</span><span class="o">=</span><span class="m">16</span>
+<span class="gp"># </span>qemu-nbd -c /dev/nbd0 image.qcow2
+<span class="gp"># </span>partprobe /dev/nbd0
+<span class="gp"># </span>vgscan
+<span class="go">Reading all physical volumes. This may take a while...</span>
+<span class="go">Found volume group &quot;vg_rhel62x8664&quot; using metadata type lvm2</span>
+<span class="gp"># </span>vgchange -ay
+<span class="go">2 logical volume(s) in volume group &quot;vg_rhel62x8664&quot; now active</span>
+<span class="gp"># </span>mount /dev/vg_rhel62x8664/lv_root /mnt
+</pre></div>
+</div>
+<p>When you are done, clean up:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>umount /mnt
+<span class="gp"># </span>vgchange -an vg_rhel62x8664
+<span class="gp"># </span>qemu-nbd -d /dev/nbd0
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+              </div>
+            </div>
+          </div>
+          <div class="docs-actions">
+          
+            <a href="openstack-images.html"><i class="fa fa-angle-double-left" data-toggle="tooltip" data-placement="top" title="Previous: Image requirements"></i></a>
+          
+          
+            <a href="create-images-manually.html"><i class="fa fa-angle-double-right" data-toggle="tooltip" data-placement="top" title="Next: Create images manually"></i></a>
+          
+          <a id="pdfLink2" href="" target="_blank" title="Download the manuals as PDF"><i class="fa fa-file-pdf-o" data-toggle="tooltip" data-placement="top" title="Download PDF"></i></a>
+          
+            <a id="logABugLink3" href="" target="_blank" title="Found an error? Report a bug against this page"><i class="fa fa-bug" data-toggle="tooltip" data-placement="top" title="Report a Bug"></i></a>
+          
+          </div>
+          <div class="row docs-byline bottom">
+            <div class="docs-updated">this page last updated: 2022-12-26 10:49:07</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8 docs-license">
+<a href="https://creativecommons.org/licenses/by/3.0/">
+ <img src="_static/images/docs/license.png" alt="Creative Commons Attribution 3.0 License"/>
+</a>
+<p>
+ Except where otherwise noted, this document is licensed under
+ <a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons
+ Attribution 3.0 License</a>. See all <a href="https://www.openstack.org/legal">
+ OpenStack Legal Documents</a>.
+</p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 docs-actions-wrapper">
+            <!-- ID buglinkbottom added so that pre-filled doc bugs
+                 are sent to Launchpad projects related to the
+                 document -->
+              <a href="#" id="logABugLink2" class="docs-footer-actions"><i class="fa fa-bug"></i> found an error? report a bug</a>
+            </div>
+          </div>
+        </div>
+<div class="col-lg-3 col-md-4 col-sm-4 col-lg-pull-9 col-md-pull-8 col-sm-pull-8 docs-sidebar">
+  <div class="btn-group docs-sidebar-releases">
+    <button onclick="location.href='/'" class="btn docs-sidebar-home" data-toggle="tooltip" data-placement="top" title="OpenStack Docs Home"><i class="fa fa-arrow-circle-o-left"></i></button>
+<button href="#" type="button" data-toggle="dropdown" class="btn docs-sidebar-release-select">OpenStack Documentation<i class="fa fa-caret-down"></i></button>
+    <ul class="dropdown-menu docs-sidebar-dropdown" role="menu" aria-labelledby="dLabel">
+      <li role="presentation" class="dropdown-header">Guides</li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/index.html#install-guides">Install Guides</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/index.html#user-guides">User Guides</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/index.html#configuration-guides">Configuration Guides</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/index.html#ops-and-admin-guides">Operations and Administration Guides</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/index.html#api-guides">API Guides</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/index.html#contributor-guides">Contributor Guides</a></li>
+      <li role="presentation" class="dropdown-header">Languages</li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/de/">Deutsch (German)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/fr/">Français (French)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/id/">Bahasa Indonesia (Indonesian)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/it/">Italiano (Italian)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/ja/">日本語 (Japanese)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/ko_KR/">한국어 (Korean)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/pt_BR/">Português (Portuguese)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/tr_TR/">Türkçe (Türkiye)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/zh_CN/">简体中文 (Simplified Chinese)</a></li>
+    </ul>
+  </div>
+  <div class="docs-sidebar-toc">
+    <div class="docs-sidebar-section" id="table-of-contents">
+      <a href="index.html" class="docs-sidebar-section-title"><h4>Virtual Machine Image Guide </h4></a>
+      <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="common/conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="obtain-images.html">Get images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openstack-images.html">Image requirements</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Modify images</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#guestfish">guestfish</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#guestmount">guestmount</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#virt-tools">virt-* tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loop-devices-kpartx-network-block-devices">Loop devices, kpartx, network block devices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create-images-manually.html">Create images manually</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-images-automatically.html">Tool support for image creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convert-images.html">Converting between image formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="share-images.html">Image sharing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common/appendix.html">Appendix</a></li>
+</ul>
+
+    </div>
+
+  <div class="docs-sidebar-toc">
+    <div class="docs-sidebar-section" id="local-table-of-contents">
+      <h4 class="docs-sidebar-section-title">Page Contents</h4>
+      <ul>
+<li><a class="reference internal" href="#">Modify images</a><ul>
+<li><a class="reference internal" href="#guestfish">guestfish</a><ul>
+<li><a class="reference internal" href="#example-guestfish-session">Example guestfish session</a></li>
+<li><a class="reference internal" href="#go-further-with-guestfish">Go further with guestfish</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#guestmount">guestmount</a></li>
+<li><a class="reference internal" href="#virt-tools">virt-* tools</a><ul>
+<li><a class="reference internal" href="#modify-a-single-file-inside-of-an-image">Modify a single file inside of an image</a></li>
+<li><a class="reference internal" href="#resize-an-image">Resize an image</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#loop-devices-kpartx-network-block-devices">Loop devices, kpartx, network block devices</a><ul>
+<li><a class="reference internal" href="#mount-a-raw-image-without-lvm">Mount a raw image (without LVM)</a></li>
+<li><a class="reference internal" href="#mount-a-raw-image-with-lvm">Mount a raw image (with LVM)</a></li>
+<li><a class="reference internal" href="#mount-a-qcow2-image-without-lvm">Mount a qcow2 image (without LVM)</a></li>
+<li><a class="reference internal" href="#mount-a-qcow2-image-with-lvm">Mount a qcow2 image (with LVM)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  </div>
+</div>
+      </div>
+    </div>
+<footer>
+  <div class="container">
+    <div class="row footer-links">
+      <div class="col-lg-2 col-sm-2">
+        <h3>OpenStack</h3>
+        <ul>
+          <li><a href="https://openstack.org/projects/">Projects</a></li>
+          <li><a href="https://www.openstack.org/software/security/">OpenStack Security</a></li>
+          <li><a href="https://openstack.org/projects/openstack-faq/">Common Questions</a></li>
+          <li><a href="https://openstack.org/blog/">Blog</a></li>g
+          <li><a href="https://openstack.org/news/">News</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <h3>Community</h3>
+        <ul>
+          <li><a href="https://openstack.org/community/">User Groups</a></li>
+          <li><a href="https://openstack.org/community/events/">Events</a></li>
+          <li><a href="https://openstack.org/community/jobs/">Jobs</a></li>
+          <li><a href="https://openstack.org/foundation/companies/">Companies</a></li>
+          <li><a href="https://docs.openstack.org/contributors">Contribute</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <h3>Documentation</h3>
+        <ul>
+          <li><a href="https://docs.openstack.org">OpenStack Manuals</a></li>
+          <li><a href="https://openstack.org/software/start/">Getting Started</a></li>
+          <li><a href="https://developer.openstack.org">API Documentation</a></li>
+          <li><a href="https://wiki.openstack.org">Wiki</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <h3>Branding & Legal</h3>
+        <ul>
+          <li><a href="https://openstack.org/brand/">Logos & Guidelines</a></li>
+          <li><a href="https://openstack.org/brand/openstack-trademark-policy/">Trademark Policy</a></li>
+          <li><a href="https://openstack.org/privacy/">Privacy Policy</a></li>
+          <li><a href="https://wiki.openstack.org/wiki/How_To_Contribute#Contributor_License_Agreement">OpenStack CLA</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 col-sm-4">
+        <h3>Stay In Touch</h3>
+        <a href="https://twitter.com/OpenStack" target="_blank" class="social-icons footer-twitter"></a>
+        <a href="https://www.facebook.com/openstack" target="_blank" class="social-icons footer-facebook"></a>
+        <a href="https://www.linkedin.com/company/openstack" target="_blank" class="social-icons footer-linkedin"></a>
+        <a href="https://www.youtube.com/user/OpenStackFoundation" target="_blank" class="social-icons footer-youtube"></a>
+        <p class="fine-print">
+          The OpenStack project is provided under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 license</a>. Openstack.org is powered by
+          <a href="https://rackspace.com" target="_blank">Rackspace Cloud Computing</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- jQuery -->
+<script type="text/javascript" src="_static/js/jquery-3.2.1.min.js"></script>
+
+<!-- Bootstrap JavaScript -->
+<script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
+
+<!-- The rest of the JS -->
+<script type="text/javascript" src="_static/js/navigation.js"></script>
+
+<!-- Docs JS -->
+<script type="text/javascript" src="_static/js/docs.js"></script>
+
+<!-- standard sphinx include libraries, which allow search highlighting -->
+<script type="text/javascript" src="_static/underscore.js"></script>
+<script type="text/javascript" src="_static/doctools.js"></script>
+<script type="text/javascript" src="_static/searchtools.js"></script>
+<script type="text/javascript" src="_static/language_data.js"></script>
+
+<script type="text/javascript">
+    var DOCUMENTATION_OPTIONS = {
+      URL_ROOT:    './',
+      VERSION:     '',
+      COLLAPSE_INDEX: false,
+      FILE_SUFFIX: '.html',
+      LINK_SUFFIX: '.html',
+      SOURCELINK_SUFFIX: '.txt',
+      HAS_SOURCE:  true
+    };
+</script>
+
+<!-- Javascript for page -->
+<script language="JavaScript">
+  /* Build a description of this page including SHA, source location on git
+   * repo, build time and the project's launchpad bug tag. Set the HREF of the
+   * bug buttons
+   */
+    var lineFeed = "%0A";
+    var gitURL = "Source: Can't derive source file URL";
+
+    /* there have been cases where "pagename" wasn't set; better check for it */
+    /* "giturl" is the URL of the source file on Git and is auto-generated by
+     * openstackdocstheme.
+     *
+     * "pagename" is a standard sphinx parameter containing the name of
+     * the source file, without extension.
+     */
+
+    var sourceFile = "modify-images" + ".rst";
+    gitURL = "Source: https://opendev.org/openstack/openstack-manuals/src/doc/image-guide/source" + "/" + sourceFile;
+
+    /* gitsha, project and bug_tag rely on variables in conf.py */
+    var gitSha = "SHA: bf388c77ad0e3655b1c07b7f3d325a61dee86c6f";
+    var repositoryName = "openstack/openstack-manuals";
+    var bugProject = "openstack-manuals";
+    var bugTitle = "Modify images in Virtual Machine Image Guide";
+    var fieldTags = "image-guide";
+    var useStoryboard = "";
+
+    /* "last_updated" is the build date and time. It relies on the
+       conf.py variable "html_last_updated_fmt", which should include
+       year/month/day as well as hours and minutes                   */
+    var buildstring = "Release:  on 2022-12-26 10:49:07";
+
+    var fieldComment = encodeURI(buildstring) +
+                       lineFeed + encodeURI(gitSha) +
+                       lineFeed + encodeURI(gitURL) ;
+
+    logABug(bugTitle, bugProject, fieldComment, fieldTags, repositoryName, useStoryboard);
+    var currentSourceFile = "modify-images";
+    var pdfFileName = "ImageGuide.pdf";
+    pdfLink(currentSourceFile, pdfFileName);
+</script>
+
+
+  </body>
+</html>

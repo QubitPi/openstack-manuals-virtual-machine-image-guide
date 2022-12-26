@@ -1,0 +1,648 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Introduction &#8212; Virtual Machine Image Guide  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/basic.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="canonical" href="/openstack-manuals-virtual-machine-image-guide/introduction.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Get images" href="obtain-images.html" />
+    <link rel="prev" title="Conventions" href="common/conventions.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Bootstrap CSS -->
+<link href="_static/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Fonts -->
+<link href="_static/css/font-awesome.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="_static/css/combined.css" rel="stylesheet">
+
+<!-- Search CSS -->
+<link href="_static/css/search.css" rel="stylesheet">
+
+<!-- Pygments CSS -->
+<link href="_static/pygments.css" rel="stylesheet">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17511903-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+
+  </head><body>
+
+<!-- SOURCE_FILE: https://opendev.org/openstack/openstack-manuals/src/doc/image-guide/source/introduction.rst -->
+
+<script>
+    (function (window, document) {
+        var loader = function () {
+            var script = document.createElement("script"), tag = document.getElementsByTagName("script")[0];
+            script.src = "https://search.openstack.org/widget/embed.min.js?t="+Date.now();
+            tag.parentNode.insertBefore(script, tag);
+        };
+        window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+    })(window, document);
+</script>
+
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button class="navbar-toggle" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <div class="brand-wrapper">
+        <a class="navbar-brand" href="https://www.openstack.org/"></a>
+      </div>
+      <div class="search-icon show"><i class="fa fa-search"></i> Search</div></div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <div class="search-container tiny">
+    <div class="openstack-search-bar" data-baseUrl="search.openstack.org" data-context="docs-openstack"></div>
+</div>
+      <ul class="nav navbar-nav navbar-main show">
+        <li class="search-container-mobile">
+    <div class="openstack-search-bar" data-baseUrl="search.openstack.org" data-context="docs-openstack"></div>
+</li>
+        <li> <!--Software -->
+          <a href="https://www.openstack.org/software/" class="drop" id="dropdownMenuSoftware">Software <i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuSoftware">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/software/">Overview</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/software/project-navigator/openstack-components">OpenStack Components</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/software/project-navigator/sdks">SDKs</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/software/project-navigator/deployment-tools">Deployment Tools</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/assets/software/projectmap/openstack-map.pdf" target="_blank">OpenStack Map</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/software/sample-configs/">Sample Configs</a></li>
+          </ul>
+        </li>
+        <li> <!-- Use Cases -->
+          <a href="https://www.openstack.org/use-cases/" class="drop" id="dropdownMenuUsers">Use Cases <i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuUsers">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/">Users in Production</a></li>
+            <li role="presentation" class="divider"></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/bare-metal/">Ironic Bare Metal</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/edge-computing/">Edge Computing</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/telecoms-and-nfv/">Telecom & NFV</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/science/">Science and HPC</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/containers/">Containers</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/use-cases/enterprise/">Enterprise</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/surveys/landing">User Survey</a></li>
+          </ul>
+        </li>
+        <li> <!-- Events -->
+          <a href="https://www.openstack.org/events/" class="drop" id="dropdownMenuEvents">Events <i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuEvents">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/summit/">Open Infrastructure Summits</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/ptg/">Project Teams Gathering</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/events/opendev-2020/">OpenDev</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/events/community-events/">Community Events</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/events/openstackdays">OpenStack & OpenInfra Days</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/videos/">Summit Videos</a></li>
+          </ul>
+        </li>
+        <li><!-- Community -->
+          <a href="https://www.openstack.org/community/" class="drop" id="dropdownMenuCommunity">Community <i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuCommunity">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/community/">Welcome! Start Here</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/community/tech-committee">OpenStack Technical Committee</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/community/speakers/">Speakers Bureau</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="http://wiki.openstack.org">OpenStack Wiki</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/coa/">Get Certified (COA)</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/community/jobs/">Jobs</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketing/">Marketing Resources</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/news/">Community News</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="http://superuser.openstack.org">Superuser Magazine</a></li>
+            <li role="presentation" class="divider"></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/community/supporting-organizations/">OpenInfra Foundation Supporting Organizations</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://openinfra.dev">Open Infrastructure Foundation (OpenInfra Foundation)</a></li>
+          </ul>
+        </li>
+        <li><!-- Marketplace -->
+          <a href="https://www.openstack.orgmarketplace/" class="drop" id="dropdownMenuLearn">Marketplace <i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu dropdown-hover" role="menu" aria-labelledby="dropdownMenuEvents">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/training/">Training</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/distros/">Distros & Appliances</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/public-clouds/">Public Clouds</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/hosted-private-clouds/">Hosted Private Clouds</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/remotely-managed-private-clouds/">Remotely Managed Private Clouds</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/consulting/">Consulting & Integrators</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.openstack.org/marketplace/drivers/">Drivers</a></li>
+          </ul>
+        </li>
+        <li><!-- Blog -->
+          <a href="https://www.openstack.org/blog/">Blog</a>
+        </li>
+        <li><!-- Docs -->
+          <a href="http://docs.openstack.org/">Docs</a>
+        </li>
+        <li> <!-- Join -->
+            <li class="join-nav-section">
+              <a href="https://openinfra.dev/join/" id="dropdownMenuJoin">Join <i class="fa fa-caret-down"></i></a>
+              <ul class="dropdown-menu dropdown-hover" role="menu" aria-labelledby="dropdownMenuJoin" style="display: none;">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="https://openinfra.dev/join/">Sign up for Foundation Membership</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="https://openinfra.dev/join/">Sponsor the Foundation</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="https://openinfra.dev">More about the Foundation</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="https://www.openstack.org/Security/login/?BackURL=/home/" class="sign-in-btn">Log In</a>
+            </li>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- /.container -->
+</nav>
+
+    <div class="container docs-book-wrapper">
+      <div class="row">
+        <div class="col-lg-9 col-md-8 col-sm-8 col-lg-push-3 col-md-push-4 col-sm-push-4">
+<div class="row docs-title">
+  <div class="col-lg-8">
+      <h1>Introduction</h1>
+    
+  </div>
+  <div class="docs-actions">
+    
+    <a href="common/conventions.html"><i class="fa fa-angle-double-left" data-toggle="tooltip" data-placement="top" title="Previous: Conventions"></i></a>
+    
+    
+    <a href="obtain-images.html"><i class="fa fa-angle-double-right" data-toggle="tooltip" data-placement="top" title="Next: Get images"></i></a>
+    
+    <a id="pdfLink1" href="" target="_blank" title="Download the manuals as PDF"><i class="fa fa-file-pdf-o" data-toggle="tooltip" data-placement="top" title="Download PDF"></i></a>
+    
+    <a id="logABugLink1" href="" target="_blank" title="Found an error? Report a bug against this page"><i class="fa fa-bug" data-toggle="tooltip" data-placement="top" title="Report a Bug"></i></a>
+    
+  </div>
+</div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="docs-body" role="main">
+
+  <section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h1>
+<p>An OpenStack Compute cloud is not very useful unless you have virtual
+machine images (which some people call “virtual appliances”).
+This guide describes how to obtain, create, and modify virtual machine
+images that are compatible with OpenStack.</p>
+<p>To keep things brief, we will sometimes use the term <code class="docutils literal notranslate"><span class="pre">image</span></code>
+instead of virtual machine image.</p>
+<p><strong>What is a virtual machine image?</strong></p>
+<p>A virtual machine image is a single file which contains a virtual disk
+that has a bootable operating system installed on it.</p>
+<section id="disk-and-container-formats-for-images">
+<h2>Disk and container formats for images<a class="headerlink" href="#disk-and-container-formats-for-images" title="Permalink to this heading">¶</a></h2>
+<p>Virtual machine images come in different <em>formats</em>.  A format describes the way
+the bits making up a file are arranged on the storage medium.  Knowledge of a
+format is required in order for a consumer to interpret the content of the file
+correctly (rather than to simply view it as a bunch of bits).</p>
+<p>When considering a stored virtual machine image, there are two types of format
+that can come into play.</p>
+<dl class="simple">
+<dt>container format</dt><dd><p>The stored file may be a <em>container</em> that contains the virtual disk.  For
+example, the virtual disk may be contained in a <code class="docutils literal notranslate"><span class="pre">tar</span></code> file which must
+be opened before the disk can be retrieved.  It’s possible, however, that
+the virtual disk is not contained in a file, but is just stored as-is by
+the Image Service.</p>
+</dd>
+<dt>disk format</dt><dd><p>The virtual disk itself has its bits arranged in some format.  A consuming
+service must know what this format is before it can effectively use the
+virtual disk.</p>
+</dd>
+</dl>
+</section>
+<section id="image-metadata">
+<h2>Image metadata<a class="headerlink" href="#image-metadata" title="Permalink to this heading">¶</a></h2>
+<p>Image metadata (also known as “image properties”) provide information about the
+virtual disk stored by the Image service.  The metadata is stored as part of
+the image record associated with the image data by the Image service.  Image
+metadata can help end users determine the nature of an image, and is used by
+associated OpenStack components and drivers which interface with the Image
+service.</p>
+<p>So that image consumers can easily identify the container and disk format of
+images, the image service has set aside particular metadata keys for these.
+Not surprisingly, these are named <code class="docutils literal notranslate"><span class="pre">container_format</span></code> and <code class="docutils literal notranslate"><span class="pre">disk_format</span></code>.
+The legal values for each of these are specified in the Image service’s Image
+schema, which you can obtain in any OpenStack installation by making the
+following API call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GET</span> <span class="o">/</span><span class="n">v2</span><span class="o">/</span><span class="n">schemas</span><span class="o">/</span><span class="n">image</span>
+</pre></div>
+</div>
+<p>The supported formats may vary across OpenStack clouds.  The formats accepted
+by a particular cloud will be specified in that cloud’s get-schema response to
+the Images API.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The image schema lists the legal identifiers for container and disk formats.
+To understand what these identifiers refer to, consult the
+<a class="reference external" href="https://docs.openstack.org/glance/latest/user/formats.html">Disk and Container Formats</a>
+section of the Glance User Guide.</p>
+</div>
+<p>Image metadata can also determine the scheduling of hosts.  If specific
+metadata are set on an image (possible metadata are architecture, hypervisor
+type, and virtual machine mode), and Compute is configured so that the
+<code class="docutils literal notranslate"><span class="pre">ImagePropertiesFilter</span></code> scheduler filter is enabled (default), then the
+scheduler only considers compute hosts that satisfy the specified properties.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Compute’s <code class="docutils literal notranslate"><span class="pre">ImagePropertiesFilter</span></code> value is specified in the
+<code class="docutils literal notranslate"><span class="pre">enabled_filters</span></code> value in the <code class="docutils literal notranslate"><span class="pre">[filter_scheduler]</span></code> section
+of the <code class="docutils literal notranslate"><span class="pre">/etc/nova/nova.conf</span></code> file.</p>
+</div>
+<p>Other Compute scheduler filters may also be affected by image metadata.
+For a complete list of valid property keys and values, refer to the
+<a class="reference external" href="https://docs.openstack.org/glance/latest/admin/useful-image-properties.html">Useful image properties</a>
+section of the Glance Administration Guide.</p>
+</section>
+<section id="adding-metadata-to-an-image">
+<h2>Adding metadata to an image<a class="headerlink" href="#adding-metadata-to-an-image" title="Permalink to this heading">¶</a></h2>
+<p>You can add metadata to Image service images by using the
+<code class="docutils literal notranslate"><span class="pre">--property</span> <span class="pre">key=value</span></code> parameter with the
+<strong class="command">openstack image create</strong> or <strong class="command">openstack image set</strong>
+command. More than one property can be specified. For example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>openstack image <span class="nb">set</span> --property <span class="nv">architecture</span><span class="o">=</span>arm <span class="se">\</span>
+  --property <span class="nv">hypervisor_type</span><span class="o">=</span>qemu image_name_or_id
+</pre></div>
+</div>
+<p>Common image properties are also specified in the
+<code class="docutils literal notranslate"><span class="pre">/etc/glance/schema-image.json</span></code> file.  Other useful property keys and values,
+are listed in the
+<a class="reference external" href="https://docs.openstack.org/glance/latest/admin/useful-image-properties.html">Useful image properties</a>
+section of the Glance Administration Guide.</p>
+<p>All associated properties for an image can be displayed using the
+<strong class="command">openstack image show</strong> command. For example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>openstack image show cirros
+<span class="go">+------------------+------------------------------------------------------+</span>
+<span class="go">| Field            | Value                                                |</span>
+<span class="go">+------------------+------------------------------------------------------+</span>
+<span class="go">| checksum         | ee1eca47dc88f4879d8a229cc70a07c6                     |</span>
+<span class="go">| container_format | bare                                                 |</span>
+<span class="go">| created_at       | 2016-04-15T13:57:38Z                                 |</span>
+<span class="go">| disk_format      | qcow2                                                |</span>
+<span class="go">| file             | /v2/images/55f0907f-70a5-4376-a346-432e4ec509ed/file |</span>
+<span class="go">| id               | 55f0907f-70a5-4376-a346-432e4ec509ed                 |</span>
+<span class="go">| min_disk         | 0                                                    |</span>
+<span class="go">| min_ram          | 0                                                    |</span>
+<span class="go">| name             | cirros                                               |</span>
+<span class="go">| owner            | f9574e69042645d6b5539035cb8c00bf                     |</span>
+<span class="go">| properties       | architecture=&#39;arm&#39;, hypervisor_type=&#39;qemu&#39;           |</span>
+<span class="go">| protected        | False                                                |</span>
+<span class="go">| schema           | /v2/schemas/image                                    |</span>
+<span class="go">| size             | 13287936                                             |</span>
+<span class="go">| status           | active                                               |</span>
+<span class="go">| tags             |                                                      |</span>
+<span class="go">| updated_at       | 2016-04-15T13:57:57Z                                 |</span>
+<span class="go">| virtual_size     | None                                                 |</span>
+<span class="go">| visibility       | public                                               |</span>
+<span class="go">+------------------+------------------------------------------------------+</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Volume-from-Image properties</strong></p>
+<p>When creating Block Storage volumes from images, also consider your
+configured image properties. If you alter the core image properties,
+you should also update your Block Storage configuration.
+Amend <code class="docutils literal notranslate"><span class="pre">glance_core_properties</span></code> in the <code class="docutils literal notranslate"><span class="pre">/etc/cinder/cinder.conf</span></code>
+file on all controller nodes to match the core properties you have
+set in the Image service.</p>
+</div>
+</section>
+<section id="metadata-definition-metadefs-service">
+<h2>Metadata definition (metadefs) service<a class="headerlink" href="#metadata-definition-metadefs-service" title="Permalink to this heading">¶</a></h2>
+<p>Images are not the only OpenStack resource that can have metadata associated
+with them.  Many other resources (for example, volumes) support setting
+metadata on the resources.  As with images, the metadata may be consumed by
+humans to understand something about the resource, or may be used by other
+OpenStack services so that they can make efficient use of the resource (for
+example, the nova filter scheduler using the image <code class="docutils literal notranslate"><span class="pre">architecture</span></code> property to
+determine an appropriate host on which to build an instance from that image).
+Thus it is important that there be a discoverable way for people and services
+to determine what metadata properties and values are available throughout an
+OpenStack cloud.</p>
+<p>To facilitate this, Glance (the OpenStack Image service) hosts a metadata
+definition service, which is also known as the <em>OpenStack metadefs catalog</em>.</p>
+<p>With this service you can define:</p>
+<dl>
+<dt>Namespace</dt><dd><ul class="simple">
+<li><p>Contains metadata definitions.</p></li>
+<li><p>Specifies the access controls for everything defined in the namespace.
+These access controls determine who can define and use the definitions
+in the namespace.</p></li>
+<li><p>Associates the definitions with different types of resources.</p></li>
+</ul>
+</dd>
+<dt>Property</dt><dd><p>A single property and its primitive constraints. Each property can only
+be a primitive type. For example, string, integer, number, boolean, or array.</p>
+</dd>
+<dt>Object</dt><dd><p>Describes a group of one to many properties and their primitive
+constraints. Each property in the group can only be a primitive type. For
+example, string, integer, number, boolean, or array.</p>
+<p>The object may optionally define required properties under the semantic
+understanding that if you use the object, you should provide all required
+properties.</p>
+</dd>
+<dt>Resource type association</dt><dd><p>Specifies the relationship between resource types and the namespaces
+that are applicable to them. This information can be used to drive UI
+and CLI views. For example, the same namespace of objects, properties,
+and tags may be used for images, snapshots, volumes, and flavors.
+Or a namespace may only apply to images.</p>
+</dd>
+</dl>
+<p>The Image service has predefined namespaces for the metadata definitions
+catalog. To load files from this directory into the database:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>glance-manage db_load_metadefs
+</pre></div>
+</div>
+<p>To unload the files from the database:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>glance-manage db_unload_metadefs
+</pre></div>
+</div>
+<p>To export the definitions in JSON format:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>glance-manage db_export_metadefs
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default, files are loaded from and exported to the Image service’s
+<code class="docutils literal notranslate"><span class="pre">/etc/glance/metadefs</span></code> directory.</p>
+</div>
+<p>There is no special relationship between the Image service and the Metadefs
+service. If you want to apply the keys and values defined in the Metadefs
+service to images, you must use the Image service API or client tools just as
+you would for any other OpenStack service.</p>
+<p>For more information about the OpenStack Metadefs catalog, see:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.openstack.org/glance/latest/user/glancemetadefcatalogapi.html">Using Glance’s Metadata Definitions Catalog Public APIs</a>
+in the Glance User Guide</p></li>
+<li><p>The <a class="reference external" href="https://docs.openstack.org/api-ref/image/v2/metadefs-index.html">Metadata Definitions Service API Reference</a></p></li>
+</ul>
+</section>
+</section>
+
+
+              </div>
+            </div>
+          </div>
+          <div class="docs-actions">
+          
+            <a href="common/conventions.html"><i class="fa fa-angle-double-left" data-toggle="tooltip" data-placement="top" title="Previous: Conventions"></i></a>
+          
+          
+            <a href="obtain-images.html"><i class="fa fa-angle-double-right" data-toggle="tooltip" data-placement="top" title="Next: Get images"></i></a>
+          
+          <a id="pdfLink2" href="" target="_blank" title="Download the manuals as PDF"><i class="fa fa-file-pdf-o" data-toggle="tooltip" data-placement="top" title="Download PDF"></i></a>
+          
+            <a id="logABugLink3" href="" target="_blank" title="Found an error? Report a bug against this page"><i class="fa fa-bug" data-toggle="tooltip" data-placement="top" title="Report a Bug"></i></a>
+          
+          </div>
+          <div class="row docs-byline bottom">
+            <div class="docs-updated">this page last updated: 2022-12-26 10:49:07</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8 docs-license">
+<a href="https://creativecommons.org/licenses/by/3.0/">
+ <img src="_static/images/docs/license.png" alt="Creative Commons Attribution 3.0 License"/>
+</a>
+<p>
+ Except where otherwise noted, this document is licensed under
+ <a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons
+ Attribution 3.0 License</a>. See all <a href="https://www.openstack.org/legal">
+ OpenStack Legal Documents</a>.
+</p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 docs-actions-wrapper">
+            <!-- ID buglinkbottom added so that pre-filled doc bugs
+                 are sent to Launchpad projects related to the
+                 document -->
+              <a href="#" id="logABugLink2" class="docs-footer-actions"><i class="fa fa-bug"></i> found an error? report a bug</a>
+            </div>
+          </div>
+        </div>
+<div class="col-lg-3 col-md-4 col-sm-4 col-lg-pull-9 col-md-pull-8 col-sm-pull-8 docs-sidebar">
+  <div class="btn-group docs-sidebar-releases">
+    <button onclick="location.href='/'" class="btn docs-sidebar-home" data-toggle="tooltip" data-placement="top" title="OpenStack Docs Home"><i class="fa fa-arrow-circle-o-left"></i></button>
+<button href="#" type="button" data-toggle="dropdown" class="btn docs-sidebar-release-select">OpenStack Documentation<i class="fa fa-caret-down"></i></button>
+    <ul class="dropdown-menu docs-sidebar-dropdown" role="menu" aria-labelledby="dLabel">
+      <li role="presentation" class="dropdown-header">Guides</li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/index.html#install-guides">Install Guides</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/index.html#user-guides">User Guides</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/index.html#configuration-guides">Configuration Guides</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/index.html#ops-and-admin-guides">Operations and Administration Guides</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/index.html#api-guides">API Guides</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/index.html#contributor-guides">Contributor Guides</a></li>
+      <li role="presentation" class="dropdown-header">Languages</li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/de/">Deutsch (German)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/fr/">Français (French)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/id/">Bahasa Indonesia (Indonesian)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/it/">Italiano (Italian)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/ja/">日本語 (Japanese)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/ko_KR/">한국어 (Korean)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/pt_BR/">Português (Portuguese)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/tr_TR/">Türkçe (Türkiye)</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="https://docs.openstack.org/zh_CN/">简体中文 (Simplified Chinese)</a></li>
+    </ul>
+  </div>
+  <div class="docs-sidebar-toc">
+    <div class="docs-sidebar-section" id="table-of-contents">
+      <a href="index.html" class="docs-sidebar-section-title"><h4>Virtual Machine Image Guide </h4></a>
+      <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="common/conventions.html">Conventions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#disk-and-container-formats-for-images">Disk and container formats for images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#image-metadata">Image metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-metadata-to-an-image">Adding metadata to an image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#metadata-definition-metadefs-service">Metadata definition (metadefs) service</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="obtain-images.html">Get images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openstack-images.html">Image requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modify-images.html">Modify images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-images-manually.html">Create images manually</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-images-automatically.html">Tool support for image creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convert-images.html">Converting between image formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="share-images.html">Image sharing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common/appendix.html">Appendix</a></li>
+</ul>
+
+    </div>
+
+  <div class="docs-sidebar-toc">
+    <div class="docs-sidebar-section" id="local-table-of-contents">
+      <h4 class="docs-sidebar-section-title">Page Contents</h4>
+      <ul>
+<li><a class="reference internal" href="#">Introduction</a><ul>
+<li><a class="reference internal" href="#disk-and-container-formats-for-images">Disk and container formats for images</a></li>
+<li><a class="reference internal" href="#image-metadata">Image metadata</a></li>
+<li><a class="reference internal" href="#adding-metadata-to-an-image">Adding metadata to an image</a></li>
+<li><a class="reference internal" href="#metadata-definition-metadefs-service">Metadata definition (metadefs) service</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  </div>
+</div>
+      </div>
+    </div>
+<footer>
+  <div class="container">
+    <div class="row footer-links">
+      <div class="col-lg-2 col-sm-2">
+        <h3>OpenStack</h3>
+        <ul>
+          <li><a href="https://openstack.org/projects/">Projects</a></li>
+          <li><a href="https://www.openstack.org/software/security/">OpenStack Security</a></li>
+          <li><a href="https://openstack.org/projects/openstack-faq/">Common Questions</a></li>
+          <li><a href="https://openstack.org/blog/">Blog</a></li>g
+          <li><a href="https://openstack.org/news/">News</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <h3>Community</h3>
+        <ul>
+          <li><a href="https://openstack.org/community/">User Groups</a></li>
+          <li><a href="https://openstack.org/community/events/">Events</a></li>
+          <li><a href="https://openstack.org/community/jobs/">Jobs</a></li>
+          <li><a href="https://openstack.org/foundation/companies/">Companies</a></li>
+          <li><a href="https://docs.openstack.org/contributors">Contribute</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <h3>Documentation</h3>
+        <ul>
+          <li><a href="https://docs.openstack.org">OpenStack Manuals</a></li>
+          <li><a href="https://openstack.org/software/start/">Getting Started</a></li>
+          <li><a href="https://developer.openstack.org">API Documentation</a></li>
+          <li><a href="https://wiki.openstack.org">Wiki</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <h3>Branding & Legal</h3>
+        <ul>
+          <li><a href="https://openstack.org/brand/">Logos & Guidelines</a></li>
+          <li><a href="https://openstack.org/brand/openstack-trademark-policy/">Trademark Policy</a></li>
+          <li><a href="https://openstack.org/privacy/">Privacy Policy</a></li>
+          <li><a href="https://wiki.openstack.org/wiki/How_To_Contribute#Contributor_License_Agreement">OpenStack CLA</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 col-sm-4">
+        <h3>Stay In Touch</h3>
+        <a href="https://twitter.com/OpenStack" target="_blank" class="social-icons footer-twitter"></a>
+        <a href="https://www.facebook.com/openstack" target="_blank" class="social-icons footer-facebook"></a>
+        <a href="https://www.linkedin.com/company/openstack" target="_blank" class="social-icons footer-linkedin"></a>
+        <a href="https://www.youtube.com/user/OpenStackFoundation" target="_blank" class="social-icons footer-youtube"></a>
+        <p class="fine-print">
+          The OpenStack project is provided under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 license</a>. Openstack.org is powered by
+          <a href="https://rackspace.com" target="_blank">Rackspace Cloud Computing</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- jQuery -->
+<script type="text/javascript" src="_static/js/jquery-3.2.1.min.js"></script>
+
+<!-- Bootstrap JavaScript -->
+<script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
+
+<!-- The rest of the JS -->
+<script type="text/javascript" src="_static/js/navigation.js"></script>
+
+<!-- Docs JS -->
+<script type="text/javascript" src="_static/js/docs.js"></script>
+
+<!-- standard sphinx include libraries, which allow search highlighting -->
+<script type="text/javascript" src="_static/underscore.js"></script>
+<script type="text/javascript" src="_static/doctools.js"></script>
+<script type="text/javascript" src="_static/searchtools.js"></script>
+<script type="text/javascript" src="_static/language_data.js"></script>
+
+<script type="text/javascript">
+    var DOCUMENTATION_OPTIONS = {
+      URL_ROOT:    './',
+      VERSION:     '',
+      COLLAPSE_INDEX: false,
+      FILE_SUFFIX: '.html',
+      LINK_SUFFIX: '.html',
+      SOURCELINK_SUFFIX: '.txt',
+      HAS_SOURCE:  true
+    };
+</script>
+
+<!-- Javascript for page -->
+<script language="JavaScript">
+  /* Build a description of this page including SHA, source location on git
+   * repo, build time and the project's launchpad bug tag. Set the HREF of the
+   * bug buttons
+   */
+    var lineFeed = "%0A";
+    var gitURL = "Source: Can't derive source file URL";
+
+    /* there have been cases where "pagename" wasn't set; better check for it */
+    /* "giturl" is the URL of the source file on Git and is auto-generated by
+     * openstackdocstheme.
+     *
+     * "pagename" is a standard sphinx parameter containing the name of
+     * the source file, without extension.
+     */
+
+    var sourceFile = "introduction" + ".rst";
+    gitURL = "Source: https://opendev.org/openstack/openstack-manuals/src/doc/image-guide/source" + "/" + sourceFile;
+
+    /* gitsha, project and bug_tag rely on variables in conf.py */
+    var gitSha = "SHA: bf388c77ad0e3655b1c07b7f3d325a61dee86c6f";
+    var repositoryName = "openstack/openstack-manuals";
+    var bugProject = "openstack-manuals";
+    var bugTitle = "Introduction in Virtual Machine Image Guide";
+    var fieldTags = "image-guide";
+    var useStoryboard = "";
+
+    /* "last_updated" is the build date and time. It relies on the
+       conf.py variable "html_last_updated_fmt", which should include
+       year/month/day as well as hours and minutes                   */
+    var buildstring = "Release:  on 2022-12-26 10:49:07";
+
+    var fieldComment = encodeURI(buildstring) +
+                       lineFeed + encodeURI(gitSha) +
+                       lineFeed + encodeURI(gitURL) ;
+
+    logABug(bugTitle, bugProject, fieldComment, fieldTags, repositoryName, useStoryboard);
+    var currentSourceFile = "introduction";
+    var pdfFileName = "ImageGuide.pdf";
+    pdfLink(currentSourceFile, pdfFileName);
+</script>
+
+
+  </body>
+</html>
